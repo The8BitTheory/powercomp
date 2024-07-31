@@ -1,0 +1,2 @@
+# powercomp
+Power Competition Manager
