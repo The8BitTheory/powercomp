@@ -17,10 +17,10 @@
 12 DU=PEEK(186):BE=PEEK(4624)+PEEK(4625)*256
 13 BLOAD "VDCBASIC2D.0AC6",U(DU):SYS DEC("AC6"):RST3
 
-14 GRAPHIC5:COLOR4,15:COLOR0,7:COLOR5,13:COLOR6,16:POKE 828,183:FAST:POKE2603,104
+14 GRAPHIC5:COLOR4,15:COLOR0,7:COLOR5,13:COLOR6,16:POKE 828,183:FAST:POKE2603,104:PRINT CHR$(14);
 
 # SET NR OF SCANLINES PER CHARACTER TO 10 AND ADJUST OTHER VALUES ACCORDINGLY (TO 320 SCANLINES TOTAL)
-15 GOSUB 29800:REM GOSUB 29900
+15 GOSUB 29900:REM GOSUB 29900
 
 16 PRINT "LOADING MOUSEDRIVER...";:BLOAD "MOUSE128.BIN",U(DU):SYS DEC("1800"):PRINT"DONE"
 
@@ -29,7 +29,7 @@
 17 DEF FN PN(ZZ)=ASC(LEFT$(SO$(CD,ZZ),1))
 
 #PI$:PROGRESS INDICATOR
-18 PI$=""
+18 PI$=""
 #AI$:ALPHABETICAL INPUT FOR WHICH COLUMN INDICES (ALL EXCEPT FILE DIALOG AND SCORES)
 19 AI$=CHR$(0)+CHR$(2)+CHR$(3)+CHR$(5)+CHR$(6)
 #NI$:NUMERICAL INPUT (ALL EXCEPT FILE DIALOG)
@@ -146,13 +146,13 @@
 130 SP$="                                                                                "
 
 # RIGHT BORDER
-131 BD$(0)=""
+131 BD$(0)=""
 
 # LEFT BORDER
-132 BD$(1)=""
+132 BD$(1)=""
 
 # BOTTOM BORDER
-133 BD$(2)=""
+133 BD$(2)=""
 
 
 # WINDOW DIMENSIONS
@@ -163,8 +163,6 @@
 
 
 139 GOSUB 63100
-
-
 
 
 # PRINT SCREEN
@@ -564,18 +562,18 @@
 
 
 # CREATE SCREEN
-900 PRINT CHR$(142)"";:COLOR5,13
+900 PRINT "";:COLOR5,13
 905 PRINT "                                                                            ";
-910 PRINT "                                                                              ";
-915 PRINT "                                                                             ";
+910 PRINT "                                                                              ";
+915 PRINT "                                                                             ";
 920 FOR L=1TO20
-925 PRINT "                                                                             ";
+925 PRINT "                                                                             ";
 930 NEXT
-932 PRINT ""CHR$(14)"BY OODWELL"CHR$(142)"";
-933 CHAR 1,40,11,""
+932 PRINT "BY OODWELL";
+933 CHAR 1,40,11,""
 
 934 COLOR 5,1
-935 CHAR 1,2,0,CHR$(14)+"                       OWER OMPETITION ANAGER V1.3                       "
+935 CHAR 1,2,0,"                       OWER OMPETITION ANAGER V1.3                       "
 
 937 CHAR 1,2,1," ILE  RDER  ENERATE "
 #940 BANK0:RTV BE+2,81,PEEK(BE+1)
@@ -583,9 +581,9 @@
 
 
 
-942 CHAR 1,2,2,CHR$(14)+"OMPETITION"+CHR$(142)+":"
-943 CHAR 1,58,2,CHR$(14)+"ILE"+CHR$(142)+":"
-944 CHAR 1,2,3,CHR$(2)+CHR$(14)+""
+942 CHAR 1,2,2,"OMPETITION:"
+943 CHAR 1,58,2,"ILE:"
+944 CHAR 1,2,3,CHR$(2)+""
 945 CHAR 1,6,3,"LAYER"
 946 CHAR 1,24,3,"CORE"
 947 CHAR 1,34,3,"ANK"
@@ -601,13 +599,13 @@
 #954 PRINT "3: RDER BY LAYER AME (SC.)"
 #956 PRINT "5: RDER BY CORE (ESC.)"
 #958 PRINT "7: EVERSE RDER"
-#960 PRINT "2: DIT OMPETITION AME"
+#960 PRINT "2: DIT OMPETITION AME"
 #962 PRINT "4: DIT ISCIPLINES"
 #964 PRINT "8: ELETE LAYER NTRY"
-#966 PRINT "=+: AVE TO ISK,  =+: AVE AS..."
-#968 PRINT "=+: OAD FROM ISK,=+: XPORT "
-#970 PRINT "=+1-7: UMP TO ISCIPLINE"
-#972 PRINT "=+: REVIEW ON 40 OL ISPLAY"CHR$(19)CHR$(19);
+#966 PRINT "=+: AVE TO ISK,  =+: AVE AS..."
+#968 PRINT "=+: OAD FROM ISK,=+: XPORT "
+#970 PRINT "=+1-7: UMP TO ISCIPLINE"
+#972 PRINT "=+: REVIEW ON 40 OL ISPLAY"CHR$(19)CHR$(19);
 
 970 PRINT CHR$(19)CHR$(19);
 
@@ -670,7 +668,7 @@
 1110 COLOR 5,1
 1112 CHAR 1,1,19," :ANCEL  ETURN:OAD ILE   :ELETE ILE  :ENAME ILE "
 
-1113 PRINT CHR$(142);
+#1113 PRINT CHR$(142);
 1114 IF DC=-1 THEN DC=0:GOSUB 10000:GOTO 1119
 
 1115 GOSUB 9900:REM CHECK DISK CHANGE FLAG
@@ -684,11 +682,11 @@
 1120 IF INSTR(SD$,CHR$(CI))>0 THEN GOSUB 1600
 
 1122 GOSUB 703:WINDOW WX%(0),WX%(1),WX%(2),WX%(3),1
-1124 PRINTCHR$(27)"M"CHR$(142)"";
-1125 PRINT"";
+1124 PRINTCHR$(27)"M";
+1125 PRINT"";
 1126 CHAR 1,0,1
-1127 PRINT"";
-1128 PRINT""CHR$(14)CHR$(27)"L";
+1127 PRINT"";
+1128 PRINT""CHR$(27)"L";
 
 1130 T=(40-LEN(T$))/2
 1132 CHAR1,1,1,""+LEFT$(SP$,T-1)+T$+LEFT$(SP$,T-1)+""
@@ -703,7 +701,7 @@
 1140 T$=LEFT$(PI$,PC)
 1142 T$=T$+LEFT$(SP$,38-PC)
 
-1144 CHAR 1,2+WX%(0),2+WX%(1),CHR$(142)+T$+CHR$(14)
+1144 CHAR 1,2+WX%(0),2+WX%(1),T$
 
 
 1146 RETURN
@@ -858,7 +856,7 @@
 
 
 
-1905 GRAPHIC0:COLOR5,15:PRINT""CHR$(14):SLOW
+1905 GRAPHIC0:COLOR5,15:PRINTCHR$(14)"":SLOW
 
 1910 PRINT USING "   =##################################";DN$(CD)
 1915 PRINT:PRINT:IX=1
@@ -904,7 +902,7 @@
 
 # EXPORT TO CSV
 
-2200 T$="XPORTING TO ":GOSUB1120
+2200 T$="XPORTING TO ":GOSUB1120
 2201 CF$=LEFT$(DN$(CD),12)+".CSV"
 
 2204 OPEN1,DU,3,"@0:"+CF$+",P,W"
@@ -978,11 +976,11 @@
 # LIST DISK CATALOG FROM MEMORY
 9700 FOR CX=1 TO CM
 9701  IF CX>15 THEN 9704
-9702  CHAR 1,6,4+CX,CHR$(14)+CE$(CX)
+9702  CHAR 1,6,4+CX,CE$(CX)
 9704 NEXT
 9706 GOSUB 705
 
-9708 PRINTCHR$(14)"";
+9708 PRINT"";
 9709 PRINT CHR$(19)CHR$(19);
 
 
@@ -1045,7 +1043,7 @@
 
 10014 IF CX=0 THEN 10024
 
-10016 IF CX<16 THEN CHAR 1,6,4+CX,CHR$(14)+CE$(CX):ELSE 10024
+10016 IF CX<16 THEN CHAR 1,6,4+CX,CE$(CX):ELSE 10024
 10018 IF NOT CV THEN GOSUB 705:CV=-1
 
 10020 GET I$:IF LEN(I$)=0 THEN 10024
@@ -1058,7 +1056,7 @@
 10024 CX=CX+1:IF CX<145 THEN GOTO 10004
 10026 CLOSE 1:CM=CX-1
 
-10027 PRINTCHR$(14)"";
+10027 PRINT"";
 10028 PRINT CHR$(19)CHR$(19);
 10029 RETURN
 
@@ -1113,19 +1111,19 @@
 29905 RGW9,9:RGW23,10:RGW11,15:RGW5,0:RGW29,8
 
 # SHIFT ALL CHARACTERS DOWN BY ONE SCANLINE
-29910 FOR L=8192 TO 10239 STEP 16
-29915  FOR IC=7 TO 0 STEP -1
-29920   VMC L+IC,L+IC+1,1
-29925  NEXT
-29927  VMW L,0
-29930 NEXT
+#29910 FOR L=8192 TO 10239 STEP 16
+#29915  FOR IC=7 TO 0 STEP -1
+#29920   VMC L+IC,L+IC+1,1
+#29925  NEXT
+#29927  VMW L,0
+#29930 NEXT
 
-29935 FOR L=10240 TO 12287 STEP 16
-29940  FOR IC=7 TO 0 STEP -1
-29945   VMC L+IC,L+IC+1,1
-29950  NEXT
-29955  VMW L,255:VMW L+9,255
-29960 NEXT
+#29935 FOR L=10240 TO 12287 STEP 16
+#29940  FOR IC=7 TO 0 STEP -1
+#29945   VMC L+IC,L+IC+1,1
+#29950  NEXT
+#29955  VMW L,255:VMW L+9,255
+#29960 NEXT
 
 29962 FOR L=12288 TO 14335 STEP 16
 29964  FOR IC=7 TO 0 STEP -1
@@ -1134,37 +1132,47 @@
 29970  VMW L,0
 29972 NEXT
 
-29974 FOR L=14336 TO 16385 STEP 16
-29976  FOR IC=7 TO 0 STEP -1
-29978   VMC L+IC,L+IC+1,1
-29980  NEXT
-29982  VMW L,255:VMW L+9,255
-29984 NEXT
+#29974 FOR L=14336 TO 16385 STEP 16
+#29976  FOR IC=7 TO 0 STEP -1
+#29978   VMC L+IC,L+IC+1,1
+#29980  NEXT
+#29982  VMW L,255:VMW L+9,255
+#29984 NEXT
 
-# CHAR 66 (VERTICAL BAR)
-29986 VMF 8192+66*16,24,10
+29985 L=12288
+# CHAR 93 (VERTICAL BAR)
+29986 VMF L+93*16,24,10
 # CHAR 109 (BOTTOM-LEFT CORNER)
-29987 VMW 8192+109*16,24
+29987 VMW L+109*16,24
 # CHAR 110 (TOP-RIGHT CORNER)
-29988 VMW 8192+110*16+9,24
+29988 VMW L+110*16+9,24
 
 # CHAR 112 (TOP-LEFT CORNER
-29989 VMW 8192+112*16+9,24
+29989 VMW L+112*16+9,24
 
 # CHAR 113 (CROSSING TO TOP)
-29990 VMW 8192+113*16,24
+29990 VMW L+113*16,24
 
 # CHAR 114 (CROSSING TO BELOW)
-29991 VMW 8192+114*16+9,24
+29991 VMW L+114*16+9,24
 
 # CHAR 115 (CROSSING TO THE LEFT)
-29992 VMW 8192+115*16,24:VMW 8192+115*16+9,24:
+29992 VMW L+115*16,24:VMW L+115*16+9,24
 
 # CHAR 107 (CROSSING TO THE RIGHT)
-29993 VMW 8192+107*16,24:VMW 8192+107*16+9,24:
+29993 VMW L+107*16,24:VMW L+107*16+9,24
 
 # CHAR 125 (BOTTOM-RIGHT CORNER)
-29994 VMW 8192+125*16,24
+29994 VMW L+125*16,24
+
+# CHAR 91 AND 92 - MAKE IT TO COMMODORE LOGO
+#31,56,112,112,112,56,31,0
+#0,224,192,0,192,224,0,0
+29995 VMW L+91*16,0:VMW L+91*16+1,31:VMW L+91*16+2,56:VMW L+91*16+3,112
+29996 VMW L+91*16+4,112:VMW L+91*16+5,112:VMW L+91*16+6,56:VMW L+91*16+7,31:VMW L+91*16+8,0
+
+29997 VMW L+92*16,0:VMW L+92*16+1,0:VMW L+92*16+2,248:VMW L+92*16+3,240
+29998 VMW L+92*16+4,0:VMW L+92*16+5,240:VMW L+92*16+6,248:VMW L+92*16+7,0:VMW L+92*16+8,0
 
 29999 RETURN
 
@@ -1326,8 +1334,6 @@
 #31000 PRINT CHR$(19)CHR$(19);
 31001 RETURN
 
-
-
 # CREATE NEW FILE AND OPEN FOR WRITING
 31050 CF$=LEFT$(DN$(CD),11)+"-"+MID$(STR$(FX),2)+".FT"
 
@@ -1479,15 +1485,15 @@
 60008 TL%=(WW%-4-LEN(T$))/2
 
 60010 COLOR5,1
-60015 PRINTCHR$(27)"M"CHR$(142)""LEFT$(SP$,WW%-4)""CHR$(27)"J";
+60015 PRINTCHR$(27)"M"LEFT$(SP$,WW%-4)""CHR$(27)"J";
 
-60020 PRINT SPC(2)""CHR$(14)LEFT$(SP$,TL%)T$LEFT$(SP$,TL%)"";
+60020 PRINT SPC(2)""LEFT$(SP$,TL%)T$LEFT$(SP$,TL%)"";
 
-60030 CHAR 1,0,1:PRINT CHR$(142)LEFT$(BD$(0),(WH%-2)*3);
+60030 CHAR 1,0,1:PRINT LEFT$(BD$(0),(WH%-2)*3);
 
 60040 CHAR 1,0,1:PRINT LEFT$(BD$(1),(WH%-2)*3);
 
-60060 PRINT""LEFT$(BD$(2),WW%-2)""CHR$(14)CHR$(27)"L";
+60060 PRINT""LEFT$(BD$(2),WW%-2)""CHR$(27)"L";
 
 60999 RETURN
 
@@ -1514,7 +1520,7 @@
 # HIGHLIGHT SELECTED MENU ENTRY
 61060 GOSUB 61100
 
-61098 PRINT CHR$(14)CHR$(19)CHR$(19);
+61098 PRINT CHR$(19)CHR$(19);
 
 61099 RETURN
 
@@ -1540,15 +1546,26 @@
 
 
 # DECLARE MENU STRUCTURE
-63000 MN$(0,0)="EW          BM+":MN$(0,1)="OAD         BM+"
-63001 MN$(0,2)="AVE         BM+":MN$(0,3)="AVE AS...   BM+"
-63002 MN$(0,4)="-"                 :MN$(0,5)="XIT         BM+"
+63000 MN$(0,0)="EW          +":MN$(0,1)="OAD         +"
+63001 MN$(0,2)="AVE         +":MN$(0,3)="AVE AS...   +"
+63002 MN$(0,4)="-"                 :MN$(0,5)="XIT         +"
 
 63003 MN$(1,0)="BY       1":MN$(1,1)="BY AME    3"
 63004 MN$(1,2)="BY CORE   5":MN$(1,3)="EVERSE    7"
 
-63005 MN$(2,0)="COREBOARD   BM+":MN$(2,1)="RINTFOX   BM+"
-63006 MN$(2,2)="          BM+"
+63005 MN$(2,0)="COREBOARD   +":MN$(2,1)="RINTFOX   +"
+63006 MN$(2,2)="          +"
+
+#63000 MN$(0,0)="EW          BM+":MN$(0,1)="OAD         BM+"
+#63001 MN$(0,2)="AVE         BM+":MN$(0,3)="AVE AS...   BM+"
+#63002 MN$(0,4)="-"                 :MN$(0,5)="XIT         BM+"
+
+#63003 MN$(1,0)="BY       1":MN$(1,1)="BY AME    3"
+#63004 MN$(1,2)="BY CORE   5":MN$(1,3)="EVERSE    7"
+
+#63005 MN$(2,0)="COREBOARD   BM+":MN$(2,1)="RINTFOX   BM+"
+#63006 MN$(2,2)="          BM+"
+
 
 63009 RETURN
 
@@ -1568,11 +1585,11 @@
 
 
 # TOP BORDER
-63110  TR$=CHR$(142)+""+LEFT$(BD$(2),TL%+2)+"  "
+63110  TR$=""+LEFT$(BD$(2),TL%+2)+"  "
 
 63112  FOR L=0 TO IX-1
-63114   IF MN$(MN%,L)="-" THEN TR$=TR$+CHR$(142)+""+LEFT$(BD$(2),TL%+2)+"":ELSE BEGIN
-63116    TC$=MN$(MN%,L):TC$=CHR$(142)+" "+CHR$(14)+TC$+LEFT$(SP$,TL%-LEN(TC$))+CHR$(142)+" "
+63114   IF MN$(MN%,L)="-" THEN TR$=TR$+""+LEFT$(BD$(2),TL%+2)+"":ELSE BEGIN
+63116    TC$=MN$(MN%,L):TC$=" "+TC$+LEFT$(SP$,TL%-LEN(TC$))+" "
 
 63118    TR$=TR$+TC$
 
