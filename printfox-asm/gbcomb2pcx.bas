@@ -36,7 +36,7 @@
  
 86   PN$=PN$(CD,SO(CD,P))
 87   PN$=LEFT$(PN$(CD,P),3) 
-92   PR$=MID$(STR$(PR%(CD,P)),2)
+92   PR$=MID$(STR$(PR%(CD,SO(CD,P))),2)
 94   DN$=LEFT$(DN$(CD),4)
 
 #     STEP 1
