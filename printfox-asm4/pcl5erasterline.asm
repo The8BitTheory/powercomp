@@ -4,15 +4,43 @@
 
 ; send data to the printer using the PCL5e language
 
+fetch_address           = $02aa
+k_fetch                 = $02a2 ; read a value from any bank
+
 dataReg                 = $dd01
 strobeReg               = $dd00
 
 .dataStart              = $fb
 
-;sendToPrinter    
+    jmp sendToPrinter
+
+setup
+    sei
+    lda #$ff		; $dd01: Ausgang
+	sta $dd03
+	
+    lda $dd02		; Bit 2 von $dd00 auf Ausgang
+	ora #4
+	sta $dd02
+	
+    lda strobeReg		; setzen
+	ora #4
+	sta strobeReg
+	
+    lda #$10		; _FLAG_ setzen
+	sta $dd0d
+	lda $dd0d
+	cli
+
+    rts
+
+sendToPrinter    
     sta .dataStart
     stx .dataStart+1
     sty .rasterLen
+
+    lda #.dataStart
+    sta fetch_address
         
     ; put length of rasterline into sequence bytes
     lda .rasterLen
@@ -28,19 +56,45 @@ strobeReg               = $dd00
     dey
     bne -
     
+;-   lda $dd0d
+;    and #$10
+;    beq -
+
+
 ; write rasterline data
-    ldx .rasterLen
-    
     ldy #0
--   lda (.dataStart),y
+    sty .storeY
+
+-   ;lda (.dataStart),y
+    ; check if printer is ready
+    lda #$ff
+    tax
+    tay
+
+busy	
+    lda $dd0d
+	dex
+	bne bsy0
+	dey
+	beq .done
+bsy0	
+    and #$10		; warten auf BUSY
+	beq busy
+
+.do
+    ldy .storeY
+    ldx #$3f        ;bank 0
+    jsr k_fetch
+
     jsr writeAndStrobe
-    iny
+    inc .storeY
     bne +       ; if .y rolls over, increase the .dataStart high-byte
     inc .dataStart+1
 
-+   dex
-    bne -       ; if .x is zero, the rasterline is complete     
-    
++   dec .rasterLen
+    bne -       ; if .rasterLen is zero, the rasterline is complete     
+
+.done    
     rts
     
     
@@ -85,7 +139,7 @@ DECDIGIT:
         TXA             ; save .A pass digit to .A
         ORA #48
         ldx .lenPos
-        sta .rasterLen,x
+        sta .rasterLenD,x
         inc .lenPos
         PLA
         RTS
@@ -93,7 +147,9 @@ DECDIGIT:
 .lenPos     !byte 0
 
 .rasterline !byte 27,42,98              ;rasterline pre ESC * b
-.rasterLen  !byte 0,0,0                 ;here comes length of rasterline in bytes (in ascii characters)
+.rasterLenD !byte 0,0,0                 ;here comes length of rasterline in bytes (in ascii characters)
             !byte 87                    ;'W' concludes the rasterline definition
 .rasterEnd
 
+.rasterLen  !byte 0
+.storeY     !byte 0
