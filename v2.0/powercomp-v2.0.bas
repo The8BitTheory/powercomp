@@ -108,7 +108,8 @@
 # Datei-Dialog (ac=0 Wettbewerb laden, ac=1 Printfox-Vorlage)
 1100 ac=1:goto 1104
 1102 ac=0
-1104 gshow 1:fm=1:gclear 0:gsettext 2,"":gosub 10000:gfocus 0:return
+1104 gshow 1:fm=1:gclear 0:gsettext 2,"":gosub 10000:if cm>0 then gset 0,21,0
+1105 gfocus 0:return
 # Fortschrittsfenster
 1120 if pg=0 then gshow 3:pg=1
 1122 gcaption 0,t$:gset 1,16,0:return

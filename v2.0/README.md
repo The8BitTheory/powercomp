@@ -39,4 +39,4 @@ Wettbewerbsdateien (z. B. `olympia2024`) liegen auf einer eigenen Diskette (`com
 
 ## Bedienung
 
-Wie v1.3 (Hinweis: Laden, Sortieren, Speichern und Export wurden im Emulator noch nicht vollständig durchgetestet): Cursor hoch/runter in Tabelle und Disziplinen, F2 Wettbewerbsname, F4 Disziplinen, F8 Eintrag löschen, C=+1…6 Disziplin springen, C=+S/A/L/N/X Speichern/Speichern unter/Laden/Neu/Beenden, C=+E CSV, C=+G Printfox, C=+P Scoreboard, C=+M Automation, CTRL+F/O/G Menüs, zusätzlich Maus (1351). ALT allein öffnet die Menüleiste; ALT+Buchstabe-Hotkeys gehen im BASIC-Betrieb nicht.
+Wie v1.3 (im Emulator getestet: Start, Laden, Sortieren nach Punkten, CSV-Export, Speichern; nicht getestet: Printfox, Automation, Umbenennen, Löschen, Maus): Cursor hoch/runter in Tabelle und Disziplinen, F2 Wettbewerbsname, F4 Disziplinen, F8 Eintrag löschen, C=+1…6 Disziplin springen, C=+S/A/L/N/X Speichern/Speichern unter/Laden/Neu/Beenden, C=+E CSV, C=+G Printfox, C=+P Scoreboard, C=+M Automation, CTRL+F/O/G Menüs, zusätzlich Maus (1351). ALT allein öffnet die Menüleiste; ALT+Buchstabe-Hotkeys gehen im BASIC-Betrieb nicht.
