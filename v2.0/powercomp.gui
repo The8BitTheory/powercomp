@@ -1,0 +1,184 @@
+; powercomp.gui - Oberflaeche fuer die GUI-Fassung des Power Competition Manager (Textmodus)
+; Vorlage: powercomp v1.3 (BASIC 7 + VDC-BASIC). Programm: powercomp.bas (BASIC, GUIT).
+; Die Tabelle hat 18 Zeilen zu je 4 Controls (Nr, Spieler, Punkte, Rang) mit fortlaufenden
+; Nummern: so fuellt GSETTEXT/GCAPTION c,18,A$(0),4 eine ganze Spalte auf einmal.
+VERSION 1
+MODE    TEXT
+SCREEN  80, 25
+THEME   "demo/vbdos.tht"
+
+BEGIN Form frmMain
+  Caption     = "Power Competition Manager V2.0"
+  Left = 0 : Top = 0 : Width = 80 : Height = 25
+  BorderStyle = Single
+
+  BEGIN MenuBar
+    BEGIN Menu mnuFile
+      Caption = "&File"
+      BEGIN Item mnuNew    : Caption = "&New"        : OnClick = MNew    : END
+      BEGIN Item mnuLoad   : Caption = "&Load..."    : OnClick = MLoad   : END
+      BEGIN Item mnuSave   : Caption = "&Save"       : OnClick = MSave   : END
+      BEGIN Item mnuSaveAs : Caption = "Save &As..." : OnClick = MSaveAs : END
+      BEGIN Item -         : END
+      BEGIN Item mnuExit   : Caption = "E&xit"       : OnClick = MExit   : END
+    END
+    BEGIN Menu mnuOrder
+      Caption = "&Order"
+      BEGIN Item mnuById    : Caption = "By &ID"     : Shortcut = F1 : OnClick = OById    : END
+      BEGIN Item mnuByName  : Caption = "By &Name"   : Shortcut = F3 : OnClick = OByName  : END
+      BEGIN Item mnuByScore : Caption = "By &Score"  : Shortcut = F5 : OnClick = OByScore : END
+      BEGIN Item mnuReverse : Caption = "&Reverse"   : Shortcut = F7 : OnClick = OReverse : END
+    END
+    BEGIN Menu mnuGen
+      Caption = "&Generate"
+      BEGIN Item mnuBoard : Caption = "Score&board" : OnClick = GBoard : END
+      BEGIN Item mnuPfox  : Caption = "&Printfox"   : OnClick = GPfox  : END
+      BEGIN Item mnuCsv   : Caption = "&CSV"        : OnClick = GCsv   : END
+      BEGIN Item mnuAuto  : Caption = "&Automation" : OnClick = GAuto  : END
+    END
+  END
+
+  BEGIN Label lblComp   : Left = 1  : Top = 0 : Caption = "Competition:" : END
+  BEGIN TextField txtComp : Left = 14 : Top = 0 : Width = 40 : MaxLength = 40 : OnChange = CompChange : END
+  BEGIN Label lblFileT  : Left = 56 : Top = 0 : Caption = "File:" : END
+  BEGIN Label lblFile   : Left = 62 : Top = 0 : Width = 14 : Caption = "" : END
+  BEGIN Label lblDirty  : Left = 77 : Top = 0 : Width = 1  : Caption = "" : END
+  BEGIN Label lblHId    : Left = 1  : Top = 2 : Caption = "ID" : END
+  BEGIN Label lblHName  : Left = 5  : Top = 2 : Caption = "Player" : END
+  BEGIN Label lblHScore : Left = 23 : Top = 2 : Caption = "Score" : END
+  BEGIN Label lblHRank  : Left = 34 : Top = 2 : Caption = "Rank" : END
+  BEGIN Label lblHDisc  : Left = 42 : Top = 2 : Caption = "Disciplines (F4)" : END
+  BEGIN Label lblId0     : Left = 1  : Top = 3 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName0 : Left = 5  : Top = 3 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore0: Left = 23 : Top = 3 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank0   : Left = 34 : Top = 3 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId1     : Left = 1  : Top = 4 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName1 : Left = 5  : Top = 4 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore1: Left = 23 : Top = 4 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank1   : Left = 34 : Top = 4 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId2     : Left = 1  : Top = 5 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName2 : Left = 5  : Top = 5 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore2: Left = 23 : Top = 5 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank2   : Left = 34 : Top = 5 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId3     : Left = 1  : Top = 6 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName3 : Left = 5  : Top = 6 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore3: Left = 23 : Top = 6 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank3   : Left = 34 : Top = 6 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId4     : Left = 1  : Top = 7 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName4 : Left = 5  : Top = 7 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore4: Left = 23 : Top = 7 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank4   : Left = 34 : Top = 7 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId5     : Left = 1  : Top = 8 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName5 : Left = 5  : Top = 8 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore5: Left = 23 : Top = 8 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank5   : Left = 34 : Top = 8 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId6     : Left = 1  : Top = 9 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName6 : Left = 5  : Top = 9 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore6: Left = 23 : Top = 9 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank6   : Left = 34 : Top = 9 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId7     : Left = 1  : Top = 10 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName7 : Left = 5  : Top = 10 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore7: Left = 23 : Top = 10 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank7   : Left = 34 : Top = 10 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId8     : Left = 1  : Top = 11 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName8 : Left = 5  : Top = 11 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore8: Left = 23 : Top = 11 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank8   : Left = 34 : Top = 11 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId9     : Left = 1  : Top = 12 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName9 : Left = 5  : Top = 12 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore9: Left = 23 : Top = 12 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank9   : Left = 34 : Top = 12 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId10     : Left = 1  : Top = 13 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName10 : Left = 5  : Top = 13 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore10: Left = 23 : Top = 13 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank10   : Left = 34 : Top = 13 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId11     : Left = 1  : Top = 14 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName11 : Left = 5  : Top = 14 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore11: Left = 23 : Top = 14 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank11   : Left = 34 : Top = 14 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId12     : Left = 1  : Top = 15 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName12 : Left = 5  : Top = 15 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore12: Left = 23 : Top = 15 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank12   : Left = 34 : Top = 15 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId13     : Left = 1  : Top = 16 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName13 : Left = 5  : Top = 16 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore13: Left = 23 : Top = 16 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank13   : Left = 34 : Top = 16 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId14     : Left = 1  : Top = 17 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName14 : Left = 5  : Top = 17 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore14: Left = 23 : Top = 17 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank14   : Left = 34 : Top = 17 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId15     : Left = 1  : Top = 18 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName15 : Left = 5  : Top = 18 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore15: Left = 23 : Top = 18 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank15   : Left = 34 : Top = 18 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId16     : Left = 1  : Top = 19 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName16 : Left = 5  : Top = 19 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore16: Left = 23 : Top = 19 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank16   : Left = 34 : Top = 19 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblId17     : Left = 1  : Top = 20 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN TextField txtName17 : Left = 5  : Top = 20 : Width = 16 : MaxLength = 16 : OnChange = CellChange : END
+  BEGIN TextField txtScore17: Left = 23 : Top = 20 : Width = 10 : MaxLength = 10 : OnChange = CellChange : END
+  BEGIN Label lblRank17   : Left = 34 : Top = 20 : Width = 3  : Align = Right : Caption = "" : END
+  BEGIN Label lblD0      : Left = 41 : Top = 3 : Width = 3 : Caption = " 1" : END
+  BEGIN TextField txtDisc0 : Left = 45 : Top = 3 : Width = 23 : MaxLength = 23 : OnChange = DiscChange : OnGotFocus = DiscFocus : END
+  BEGIN Label lblD1      : Left = 41 : Top = 4 : Width = 3 : Caption = " 2" : END
+  BEGIN TextField txtDisc1 : Left = 45 : Top = 4 : Width = 23 : MaxLength = 23 : OnChange = DiscChange : OnGotFocus = DiscFocus : END
+  BEGIN Label lblD2      : Left = 41 : Top = 5 : Width = 3 : Caption = " 3" : END
+  BEGIN TextField txtDisc2 : Left = 45 : Top = 5 : Width = 23 : MaxLength = 23 : OnChange = DiscChange : OnGotFocus = DiscFocus : END
+  BEGIN Label lblD3      : Left = 41 : Top = 6 : Width = 3 : Caption = " 4" : END
+  BEGIN TextField txtDisc3 : Left = 45 : Top = 6 : Width = 23 : MaxLength = 23 : OnChange = DiscChange : OnGotFocus = DiscFocus : END
+  BEGIN Label lblD4      : Left = 41 : Top = 7 : Width = 3 : Caption = " 5" : END
+  BEGIN TextField txtDisc4 : Left = 45 : Top = 7 : Width = 23 : MaxLength = 23 : OnChange = DiscChange : OnGotFocus = DiscFocus : END
+  BEGIN Label lblD5      : Left = 41 : Top = 8 : Width = 3 : Caption = " 6" : END
+  BEGIN TextField txtDisc5 : Left = 45 : Top = 8 : Width = 23 : MaxLength = 23 : OnChange = DiscChange : OnGotFocus = DiscFocus : END
+  BEGIN Label lblD6      : Left = 41 : Top = 9 : Width = 3 : Caption = " 7" : END
+  BEGIN TextField txtDisc6 : Left = 45 : Top = 9 : Width = 23 : MaxLength = 23 : OnChange = DiscChange : OnGotFocus = DiscFocus : END
+  BEGIN Label lblStatus : Left = 1 : Top = 21 : Width = 76 : Caption = "" : END
+END
+
+BEGIN Form frmFile
+  Caption     = "Load File"
+  Width = 46 : Height = 20
+  StartPos    = Center
+  BorderStyle = Double
+  Modal       = True
+  Shadow      = True
+
+  BEGIN ListBox lstFiles
+    Left = 2 : Top = 1 : Width = 40 : Height = 12
+    Capacity = 144
+    OnDblClick = FileOK
+  END
+  BEGIN Label lblRen      : Left = 2  : Top = 14 : Caption = "New name:" : END
+  BEGIN TextField txtRen  : Left = 12 : Top = 14 : Width = 17 : MaxLength = 16 : Filter = Filename : END
+  BEGIN Button btnFLoad   : Left = 2  : Top = 16 : Width = 9  : Caption = "&Load"   : Default = True : OnClick = FileOK : END
+  BEGIN Button btnFDel    : Left = 12 : Top = 16 : Width = 9  : Caption = "&Delete" : OnClick = FileDel : END
+  BEGIN Button btnFRen    : Left = 22 : Top = 16 : Width = 9  : Caption = "&Rename" : OnClick = FileRen : END
+  BEGIN Button btnFCancel : Left = 32 : Top = 16 : Width = 10 : Caption = "&Cancel" : Cancel = True : OnClick = FileCancel : END
+END
+
+BEGIN Form frmSave
+  Caption     = "Save As"
+  Width = 40 : Height = 8
+  StartPos    = Center
+  BorderStyle = Double
+  Modal       = True
+  Shadow      = True
+
+  BEGIN Label lblSave      : Left = 2  : Top = 1 : Caption = "&File name:" : END
+  BEGIN TextField txtSave  : Left = 14 : Top = 1 : Width = 17 : MaxLength = 16 : Filter = Filename : END
+  BEGIN Button btnSOK      : Left = 6  : Top = 4 : Width = 10 : Caption = "OK"      : Default = True : OnClick = SaveOK : END
+  BEGIN Button btnSCancel  : Left = 20 : Top = 4 : Width = 10 : Caption = "&Cancel" : Cancel = True  : OnClick = SaveCancel : END
+END
+
+BEGIN Form frmProg
+  Caption     = "Please wait"
+  Width = 46 : Height = 7
+  StartPos    = Center
+  BorderStyle = Double
+  Shadow      = True
+
+  BEGIN Label lblProg      : Left = 2 : Top = 1 : Width = 40 : Align = Center : Caption = "" : END
+  BEGIN ProgressBar pbProg : Left = 2 : Top = 3 : Width = 40 : Max = 38 : END
+END
